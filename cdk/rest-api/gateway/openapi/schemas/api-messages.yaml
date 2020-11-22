@@ -1,0 +1,29 @@
+RequestMetadata:
+  type: object
+  required: ['requestId']
+  properties:
+    client:
+      type: string
+      description: Client system originating the call
+    clientRef:
+      type: string
+      description: Business relevant request identifier
+    requestId:
+      type: string
+      description: Unique identifier for the request assigned by the client system
+    requestTS:
+      type: string
+      description: |
+        Request timestamp in ISO8601 datetime string format with timezone 
+        (e.g. 2020-07-25T15:34:49.456+02:00 or 2020-07-25T13:34:49.456Z)
+
+ResponseMetadata:
+  type: object
+  required: ['requestMetadata', 'responseId']
+  properties:
+    requestMetadata:
+      $ref: '#/components/schemas/RequestMetadata'
+    responseId:
+      type: string
+      description: Client Management response tracking id
+

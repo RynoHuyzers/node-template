@@ -1,0 +1,20 @@
+openapi: 3.0.0
+
+info:
+  title: ${AppName} User Management Microservice
+  description: Authentication API
+  version: '1.0'
+
+tags:
+  - name: Clients
+    description: Operations on the clients resource
+
+paths:
+  $include: ./paths.yaml
+
+components:
+
+  schemas:
+    $include: ./schemas/api-messages.yaml
+    $include: ./schemas/client.yaml
+
