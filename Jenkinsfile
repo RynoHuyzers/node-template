@@ -1,8 +1,11 @@
 pipeline {
-
+    agent {
+        label 'main'
+    }
 
     environment {
         AWS_DEFAULT_REGION="${params.AWSRegion}"
+        sonarqubeScannerHome = tool 'SonarQube Scanner 3.2.0.1227'
     }
 
     parameters {
