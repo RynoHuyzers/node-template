@@ -1,16 +1,13 @@
 pipeline {
-    agent {
-        label 'CDK1.x'
-    }
+
 
     environment {
         AWS_DEFAULT_REGION="${params.AWSRegion}"
-        sonarqubeScannerHome = tool 'SonarQube Scanner 3.2.0.1227'
     }
 
     parameters {
         string(name: 'AppName', defaultValue: 'Node-Template')
-        string(name: 'DeployBucket', defaultValue: 'dev-deployments-customers-ecommerce-co-za')
+        string(name: 'DeployBucket', defaultValue: '')
         string(name: 'ProjectName', defaultValue: 'Microservice-Node-Template')
 
         string(name: 'AWSRegion', defaultValue: 'eu-west-1', description: 'AWS Region')
