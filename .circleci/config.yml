@@ -5,16 +5,20 @@ orbs:
   node: circleci/node@4.2.0
   aws-cli: circleci/aws-cli@1.4.1
 jobs:
-  test:
-    executor:
-      name: node/default
-      tag: '13.14'
-    steps:
+  run_tests:
+    docker:
+      - image: circleci/node:10
+    steps:  
       - checkout
-      - node/install-packages
       - run:
-          command: npm run test
+          name: Install npm dependencies
+          command: |
+            npm install --save
+      - run:
+          name: Run unit tests
+          command: |
+            npm run test
 workflows:
   test:
     jobs:
-      - test
+      - run_tests
