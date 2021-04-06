@@ -32,6 +32,6 @@ workflows:
   test:
     jobs:
       - run_tests
-  build:
-    jobs:
-      - run_build
+      - run_build:
+          requires:
+            - run_tests
