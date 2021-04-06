@@ -18,7 +18,20 @@ jobs:
           name: Run unit tests
           command: |
             npm run test
+  run_build:
+    docker:
+      - image: circleci/node:10
+    steps:  
+      - checkout   
+      - run:
+          name: Build
+          command: |
+            npm run build
+
 workflows:
   test:
     jobs:
       - run_tests
+  build:
+    jobs:
+      - run_build
