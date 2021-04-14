@@ -18,6 +18,9 @@ jobs:
           name: Run unit tests
           command: |
             npm run test
+      - save_cache:
+          name: Saving Cache
+          key: node-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
   run_build:
     docker:
       - image: circleci/node:10
@@ -31,7 +34,15 @@ jobs:
           name: Build
           command: |
             npm run build
-
+  run_deploy:
+    docker:
+      - image: circleci/node:10
+    steps:
+      - checkout
+      - run:
+          name: Deploy
+          command: |
+            npm run cdk:deploy:rest-api-proxy
 workflows:
   test:
     jobs:
@@ -39,3 +50,6 @@ workflows:
       - run_build:
           requires:
             - run_tests
+      - run_deploy:
+          requires:
+            - run_build
