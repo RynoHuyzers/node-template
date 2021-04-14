@@ -18,9 +18,6 @@ jobs:
           name: Run unit tests
           command: |
             npm run test
-      - save_cache:
-          name: Saving Cache
-          key: node-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
   run_build:
     docker:
       - image: circleci/node:10
