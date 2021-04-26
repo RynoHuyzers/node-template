@@ -11,6 +11,10 @@ jobs:
     steps:  
       - checkout
       - run:
+          name: Install npm dependencies
+          command: |
+            npm install --save
+      - run:
           name: Run unit tests
           command: |
             npm run test
@@ -41,10 +45,6 @@ jobs:
           name: Build
           command: |
             npm run rest-api:build
-      - run:
-          name: Install npm dependencies
-          command: |
-            npm install --save
       - run:
           name: Deploy
           command: |
