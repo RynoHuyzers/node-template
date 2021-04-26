@@ -31,7 +31,7 @@
     "cdk:deploy:rest-api-proxy": "cd cdk/src/rest-api/proxy-lambda && npx rimraf cdk.out && cdk deploy",
     "cdk:deploy:rest-api-gw": "cd cdk/src/rest-api/gateway && npx rimraf cdk.out && cdk deploy",
     "cdk:deploy:dynamodb": "cd cdk/src/dynamodb && npx rimraf cdk.out && cdk deploy",
-    "nest-layer:build": "cd nest-layer && npm install && mkdir -p nodejs && cp -r node_modules nodejs/ && zip -r ../deploy/nest-layer.zip nodejs && rimraf nodejs",
+    "nest-layer:build": "cd nest-layer && npm install && mkdir -p nodejs && cp -r node_modules nodejs/ && sudo zip -r ../deploy/nest-layer.zip nodejs && rimraf nodejs",
     "rest-api:build": "cd rest-api && nest build",
     "dynamodb:build": "cd dynamodb && nest build",
     "rest-api:doc": "npm run rest-api:inc && npx redoc-cli bundle dist/rest-api/openapi/clients-api.yaml --options.pathInMiddlePanel=true",
