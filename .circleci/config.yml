@@ -11,42 +11,64 @@ jobs:
     steps:  
       - checkout
       - run:
+          name: Run unit tests
+          command: |
+            npm run test
+      - run:
+          name: Build Nest Layer
+          command: |
+            npm run nest-layer:build
+      - run:
+          name: Build Rest-API
+          command: |
+            npm run rest-api:build
+      - run:
+          name: Build
+          command: |
+            # Deployable Zip
+                        npm prune --production
+                        npx mkdirp deploy/rest-api
+
+                        cd build
+
+                        ## zip all build artifact from rest-api:build
+                        zip -r9 ../deploy/rest-api/client-management-rest-lambda.zip *
+                        cd ..
+                        ## zip node modules into zip file
+                        zip -r9 deploy/rest-api/client-management-rest-lambda.zip node_modules/
+                        rm -rf node_modules
+      - run:
+          name: Build
+          command: |
+            npm run rest-api:build
+      - run:
           name: Install npm dependencies
           command: |
             npm install --save
       - run:
-          name: Run unit tests
+          name: Deploy
           command: |
-            npm run test
-  run_build:
-    docker:
-      - image: circleci/node:10
-    steps:  
-      - checkout
-      - run:
-          name: Install npm dependencies
-          command: |
-            npm install --save   
+            echo "Deploy Nest Layer"
+            npm run cdk:build:nest-layer
+
+            cd cdk/src/nest-layer
+            npx rimraf cdk.out
+
+                      
+            npm run cdk:deploy:nest-layer -- --require-approval=never
       - run:
           name: Build
           command: |
-            npm run build
-  run_deploy:
-    docker:
-      - image: circleci/node:10
-    steps:
-      - checkout
-      - run:
-          name: Deploy
-          command: |
-            npm run cdk:deploy:rest-api-proxy
+            echo "Deploy REST API Proxy Lambda"
+                        ## cd into cdk directory and compiles cdk
+                        npm run cdk:build:rest-api-proxy
+
+                        cd cdk/src/rest-api/proxy-lambda
+                        npx rimraf cdk.out
+
+                        ## Deploys zip file created during cdk compile
+                        npm run cdk:deploy:rest-api-proxy -- --require-approval=never
 workflows:
   test:
     jobs:
       - run_tests
-      - run_build:
-          requires:
-            - run_tests
-      - run_deploy:
-          requires:
-            - run_build
