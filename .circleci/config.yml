@@ -8,12 +8,22 @@ jobs:
   run_tests:
     docker:
       - image: circleci/node:10
+    working_directory: ~/repo
     steps:  
       - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
       - run:
           name: Install npm dependencies
           command: |
             npm install --save
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-
       - run:
           name: Run unit tests
           command: |
